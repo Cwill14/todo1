@@ -1,9 +1,14 @@
 const express = require('express');
 
+const mainRouter = require('./main/mainRouter.js');
+
 const server = express();
 
 server.use(express.json());
 server.use(logger);
+
+server.use('/main', mainRouter);
+
 
 server.get('/', (req, res) => {
     res.status(200).json({ Dustin: "It's working!" });
