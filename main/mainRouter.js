@@ -13,11 +13,15 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const newTask = req.body.task;
+    const newTask = {
+        task: req.body.task,
+        completed: false
+    }
+    // console.log("req.body = ", req.body)
     if (newTask) {
         Tasks.addTask(newTask)
             .then(response => {
-                res.status(201).json({ message: 'successfully added task' })
+                res.status(201).json({ message: 'successfully added task', newID: response })
             })
             .catch(err => {
                 res.status(500).json({ error: err })
@@ -27,8 +31,35 @@ router.post('/', (req, res) => {
     }
 })
 
-router.put()
+router.put('/:id', async (req, res) => {
+    const taskID = req.params.id;
+    // const changes = req.body.task;
+    const changes = req.body;
 
-router.delete()
+    // console.log("req.body = ", req.body)
+    // console.log("req.params = ", req.params)
+    if (changes) {
+        try {
+            const response = await Tasks.updateTask(taskID, changes);
+            // console.log("response = ", response)
+            res.status(200).json({ message: "successfully updated task" })
+        } catch(err) {
+            res.status(500).json(err.message)
+        }
+    } else {
+        res.status(400).json({ error: "missing changes in request" })
+    }
+})
+
+router.delete('/:id', (req, res) => {
+    const taskID = req.params.id;
+    Tasks.deleteTask(taskID)
+        .then(response => {
+            res.status(200).json({ response: response, message: "successfully deleted task" })
+        })
+        .catch(error => {
+            res.status(500).json({ errorMessage: error.message, message: "problem deleting task" })
+        })
+})
 
 module.exports = router;
