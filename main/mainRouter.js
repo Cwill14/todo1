@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
         task: req.body.task,
         completed: false
     }
-    // console.log("req.body = ", req.body)
+    console.log("req.body = ", req.body)
     if (newTask) {
         Tasks.addTask(newTask)
             .then(response => {
