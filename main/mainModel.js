@@ -11,7 +11,6 @@ function getTasks() {
     return db('tasks')
 }
 function addTask(task) {
-    // return db('tasks').insert(task, "id")
     return db('tasks').insert(task)
 }
 function deleteTask(id) {

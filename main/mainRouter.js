@@ -17,7 +17,6 @@ router.post('/', (req, res) => {
         task: req.body.task,
         completed: false
     }
-    console.log("req.body = ", req.body)
     if (newTask) {
         Tasks.addTask(newTask)
             .then(response => {
@@ -33,15 +32,10 @@ router.post('/', (req, res) => {
 
 router.put('/:id', async (req, res) => {
     const taskID = req.params.id;
-    // const changes = req.body.task;
     const changes = req.body;
-
-    // console.log("req.body = ", req.body)
-    // console.log("req.params = ", req.params)
     if (changes) {
         try {
             const response = await Tasks.updateTask(taskID, changes);
-            // console.log("response = ", response)
             res.status(200).json({ message: "successfully updated task" })
         } catch(err) {
             res.status(500).json(err.message)
