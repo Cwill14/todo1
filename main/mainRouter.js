@@ -15,12 +15,14 @@ router.get('/:uId', restricted, (req, res) => {
 })
 
 router.post('/:uId', restricted, (req, res) => {
+    // console.log("req.params = ", req.params)
     const newTask = {
         task: req.body.task,
         completed: false,
-        user_id: req.params.id
+        // user_id: parseInt(req.params.uId)
+        user_id: req.params.uId
     }
-    // const userId = req.params.id;
+    console.log("newTask = ", newTask);
     if (newTask) {
         Tasks.addTask(newTask)
             .then(response => {
@@ -34,7 +36,7 @@ router.post('/:uId', restricted, (req, res) => {
     }
 })
 
-router.put('/:uId/:tId', async (req, res) => {
+router.put('/:uId/:tId', restricted, async (req, res) => {
     const userId = req.params.uId
     const taskID = req.params.tId;
     const changes = req.body;
