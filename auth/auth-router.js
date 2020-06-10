@@ -24,11 +24,14 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    console.log("req.body login = ", req.body)
-    const { username, password } = req.body;
+    // console.log("req.body login = ", req.body)
+    let { username, password } = req.body;
     // const { user, password } = req.body;
-    console.log("username in router = ", username)
+    // console.log("username in router = ", username)
+    // Users.getUser({ user })
     Users.getUser(username)
+    // Users.getUser(username, password)
+        .first()
         .then(user => {
             if (user && bcrypt.compareSync(password, user.password)) {
                 const token = generateToken(user);
@@ -51,7 +54,9 @@ router.get('/users', restricted, (req, res) => {
         .then(list => {
             res.status(200).json(list)
         })
-        .catch(err => res.status(500).json(err))
+        .catch(err => {
+            res.status(500).json(err.message);
+        })
 })
 
 const generateToken = user => {
