@@ -7,15 +7,25 @@ module.exports = {
     updateTask
 }
 
-function getTasks() {
-    return db('tasks')
+function getTasks(uId) {
+    return db('tasks as t')
+        .where('t.user_id', '=', uId)
 }
+// function addTask(uId, task) {
 function addTask(task) {
-    return db('tasks').insert(task)
+    return db('tasks as t')
+        // .where('t.user_id', '=', uId)
+        .insert(task)
 }
-function deleteTask(id) {
-    return db('tasks as t').where('t.id', '=', id).delete()
+function deleteTask(uId, tId) {
+    return db('tasks as t')
+        .where('t.id', '=', tId)
+        .where('t.user_id', '=', uId)
+        .delete()
 }
-function updateTask(id, changes) {
-    return db('tasks as t').where('t.id', '=', id).update(changes)
+function updateTask(uId, tId, changes) {
+    return db('tasks as t')
+        .where('t.id', '=', tId)
+        .where('t.user_id', '=', uId)
+        .update(changes)
 }

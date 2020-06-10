@@ -3,8 +3,9 @@ const router = require('express').Router();
 const Tasks = require('./mainModel');
 const restricted = require('../auth/auth-middleware');
 
-router.get('/', (req, res) => {
-    Tasks.getTasks()
+router.get('/:uId', restricted, (req, res) => {
+    const userId = req.params.uId;
+    Tasks.getTasks(userId)
         .then(tasks => {
             res.status(200).json(tasks)
         })
@@ -13,11 +14,13 @@ router.get('/', (req, res) => {
         })
 })
 
-router.post('/', (req, res) => {
+router.post('/:uId', restricted, (req, res) => {
     const newTask = {
         task: req.body.task,
-        completed: false
+        completed: false,
+        user_id: req.params.id
     }
+    // const userId = req.params.id;
     if (newTask) {
         Tasks.addTask(newTask)
             .then(response => {
@@ -31,12 +34,13 @@ router.post('/', (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
-    const taskID = req.params.id;
+router.put('/:uId/:tId', async (req, res) => {
+    const userId = req.params.uId
+    const taskID = req.params.tId;
     const changes = req.body;
     if (changes) {
         try {
-            const response = await Tasks.updateTask(taskID, changes);
+            const response = await Tasks.updateTask(userId, taskID, changes);
             res.status(200).json({ message: "successfully updated task" })
         } catch(err) {
             res.status(500).json(err.message)
@@ -46,9 +50,10 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', (req, res) => {
-    const taskID = req.params.id;
-    Tasks.deleteTask(taskID)
+router.delete('/:uId/:tId', restricted, (req, res) => {
+    const taskID = req.params.tId;
+    const userId = req.params.uId;
+    Tasks.deleteTask(userId, taskID)
         .then(response => {
             res.status(200).json({ response: response, message: "successfully deleted task" })
         })

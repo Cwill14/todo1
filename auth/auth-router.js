@@ -7,7 +7,7 @@ const secret = require('./secrets.js');
 const restricted = require('./auth-middleware.js');
 
 router.post('/signup', async (req, res) => {
-    console.log("req.body = ", req.body)
+    // console.log("req.body = ", req.body)
     const user = req.body;
     user.password = bcrypt.hashSync(user.password, 10)
     try {
@@ -24,8 +24,11 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    const { user, password } = req.body;
-    Users.getUser({ user})
+    console.log("req.body login = ", req.body)
+    const { username, password } = req.body;
+    // const { user, password } = req.body;
+    console.log("username in router = ", username)
+    Users.getUser(username)
         .then(user => {
             if (user && bcrypt.compareSync(password, user.password)) {
                 const token = generateToken(user);

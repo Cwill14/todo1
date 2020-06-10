@@ -10,8 +10,10 @@ function addUser(user) {
     return db('users').insert(user)
 }
 
-function getUser(user) {
-    return db('users').where(user)
+function getUser(username) {
+    console.log("username = ", username)
+    return db('users as u')
+        .where('u.username', '=', username)
 }
 
 function getAllUsers() {
