@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const Tasks = require('./mainModel');
+const restricted = require('../auth/auth-middleware');
 
 router.get('/', (req, res) => {
     Tasks.getTasks()

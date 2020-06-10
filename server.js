@@ -1,16 +1,19 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 
+const authRouter = require('./auth/auth-router.js');
 const mainRouter = require('./main/mainRouter.js');
 
 const server = express();
 
 server.use(express.json());
 server.use(cors());
+server.use(helmet());
 server.use(logger);
 
+server.use('/auth', authRouter);
 server.use('/main', mainRouter);
-
 
 server.get('/', (req, res) => {
     res.status(200).json({ Dustin: "It's working!" });
