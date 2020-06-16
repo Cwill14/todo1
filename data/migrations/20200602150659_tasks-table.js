@@ -13,7 +13,7 @@ exports.up = function(knex) {
     .createTable('tasks', tbl => {
         tbl.increments();
         tbl.text('task', 255)
-            .unique()
+            // .unique()
             .notNullable();
         tbl.boolean('completed')
         tbl.integer('user_id')

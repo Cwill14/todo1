@@ -5,6 +5,7 @@ module.exports = {
     addTask,
     deleteTask,
     updateTask
+    // getAllTasks
 }
 
 function getTasks(uId) {
@@ -29,3 +30,7 @@ function updateTask(uId, tId, changes) {
         .where('t.user_id', '=', uId)
         .update(changes)
 }
+
+// function getAllTasks() {
+//     return db('tasks as t')
+// }

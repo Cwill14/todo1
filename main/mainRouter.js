@@ -14,13 +14,15 @@ router.get('/:uId', restricted, (req, res) => {
         })
 })
 
-router.post('/:uId', restricted, (req, res) => {
+// router.post('/:uId', restricted, (req, res) => {
+router.post('/', restricted, (req, res) => {
     // console.log("req.params = ", req.params)
     const newTask = {
         task: req.body.task,
         completed: false,
         // user_id: parseInt(req.params.uId)
-        user_id: req.params.uId
+        // user_id: req.params.uId
+        user_id: req.body.uId
     }
     console.log("newTask = ", newTask);
     if (newTask) {
@@ -63,5 +65,15 @@ router.delete('/:uId/:tId', restricted, (req, res) => {
             res.status(500).json({ errorMessage: error.message, message: "problem deleting task" })
         })
 })
+
+// router.get('/tasks', restricted, (req, res) => {
+//     Tasks.getAllTasks()
+//         .then(tasks => {
+//             res.status(200).json(tasks)
+//         })
+//         .catch(err => {
+//             res.status(500).json(err.message)
+//         })
+// })
 
 module.exports = router;
